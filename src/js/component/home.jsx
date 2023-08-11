@@ -8,45 +8,79 @@ const Home = () => {
 	
 	const [songs, setSongs] = useState([])
 	const [color, setColor] = useState("")
-	const [url, setUrl] = useState("")
-	const [boton, setBoton] = useState("block")
-
+	const [newUrl, setNewUrl] = useState("")
+	const [id, setId] = useState()
+	const [botonPlay, setBotonPlay] = useState("block")
+	const [botonPause, setBotonPause] = useState("none")
 	const audio = useRef()
+	const http = 'https://assets.breatheco.de/apis/sound/'
 
-	function getInfo() {
-		fetch('https://playground.4geeks.com/apis/fake/sound/songs')//especificamos la url donde vamos a buscar info
-			.then((response) => response.json()) // la info que llega la voy a convertir en un formato json
-			.then((data) => setSongs(data))// convierte la info en un objeto, para que lo procesemos como queramos
-			.catch((error) => console.log(error))// si hay un error me muestra cual fue
+	async function getInfo() {
+		try {
+			const response = await fetch('https://playground.4geeks.com/apis/fake/sound/songs')     // fetch('https://playground.4geeks.com/apis/fake/sound/songs')  //especificamos la url donde vamos a buscar info
+			const data = await response.json() // 	.then((response) => response.json()) // la info que llega la voy a convertir en un formato json
+			await setSongs(data) // 	.then((data) => setSongs(data))// convierte la info en un objeto, para que lo procesemos como queramos
+		} catch (error) {
+			console.log("error"); // 	.catch((error) => console.log(error))// si hay un error me muestra cual fue
+		}
 	}
 
 	useEffect(() => {
 		getInfo()
 	}, [])
 
-	function play() {
-		if (boton == "block") {
-			audio.current.play()
-		} 
+	function rep() {
+		// console.log(newUrl);
+		if (audio.current.paused) {
+			audio.current.play();
+			setBotonPlay("none")
+			setBotonPause("block")
+		}else{
+			audio.current.pause()
+			setBotonPlay("block")
+			setBotonPause("none")
+		}
+	}
+
+	function next() {
+		setId(id + 1);
+		if (id == songs.length - 1) {
+			setId(0)
+		}
+		http + songs[id].url
+		audio.current.src = http
+		rep()
+		console.log(songs[id].name);
+	}
+
+	function back() {
+		setId(id - 1);
+		if (songs[id] < 0){
+			setId(songs.length - 1)
+		}
+			http + songs[id].url
+			audio.current.src = http
+			rep()
+			console.log(songs[id].name);
 	}
 
 	return (
 		<div>
 			<ul className="list-group">{
 				songs.map((song) => {
-					return <li onMouseEnter={() => setColor(song.id)} key={song.id}
-							onClick={() => setUrl(song.url)}
-						className={"bg-black text-white list-group-item bg-opacity-" + (color == song.id ? "75" : "100")}
+					return <li onMouseEnter={() => setColor('100')} key={song.id}
+							onClick={() => {setNewUrl(song.url); rep(); setId(song.id)}}
+						className={"bg-black text-white list-group-item bg-opacity-" + color}
 					><span className="me-4 text-white-50">{song.id}</span>{song.name}</li>
 				})
 			}</ul>
 			<div className="bg-black bg-gradient bg-opacity-75 fixed-bottom">
-				<footer className="d-flex justify-content-around my-2">
-					<audio src={"https://assets.breatheco.de/apis/sound/" + url} ref={audio}></audio>
-					<i className="fa fa-backward" style={{ color: '#fff'}}></i>
-					<i onClick={() => play()} className="fa fa-play" style={{color: '#fff'}}></i>
-					<i onClick={() => play()} className="fa fa-pause d-none" style={{color: '#fff'}}></i>
-					<i className="fa fa-forward" style={{ color: '#fff' }}></i>
+				<footer className="d-flex justify-content-around my-3">
+					<audio src={http + newUrl} ref={audio}></audio>
+					<i onClick={() => back()} className="fa fa-backward" style={{ color: '#fff'}}></i>
+					<i onClick={() => rep()} className={"fa fa-play d-" + botonPlay} style={{color: '#fff'}}></i>
+					<i onClick={() => rep()} className={"fa fa-pause d-" + botonPause} style={{color: '#fff'}}></i>
+					<i onClick={() => next()} className="fa fa-forward" style={{ color: '#fff' }}></i>
 				</footer>
 			</div>
 		</div>
