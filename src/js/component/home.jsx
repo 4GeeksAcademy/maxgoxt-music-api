@@ -19,7 +19,7 @@ const Home = () => {
 		try {
 			const response = await fetch('https://playground.4geeks.com/apis/fake/sound/songs')     // fetch('https://playground.4geeks.com/apis/fake/sound/songs')  //especificamos la url donde vamos a buscar info
 			const data = await response.json() // 	.then((response) => response.json()) // la info que llega la voy a convertir en un formato json
-			await setSongs(data) // 	.then((data) => setSongs(data))// convierte la info en un objeto, para que lo procesemos como queramos
+			setSongs(data) // 	.then((data) => setSongs(data))// convierte la info en un objeto, para que lo procesemos como queramos
 		} catch (error) {
 			console.log("error"); // 	.catch((error) => console.log(error))// si hay un error me muestra cual fue
 		}
@@ -47,19 +47,18 @@ const Home = () => {
 		if (id == songs.length - 1) {
 			setId(0)
 		}
-		http + songs[id].url
-		audio.current.src = http
+		audio.current.src = http + songs[id].url
 		rep()
 		console.log(songs[id].name);
 	}
 
 	function back() {
 		setId(id - 1);
-		if (songs[id] < 0){
-			setId(songs.length - 1)
+		if (id == 0){
+			setId((1 - songs.length) * -1)
 		}
-			http + songs[id].url
-			audio.current.src = http
+			let httpCompleto = http + songs[id].url
+			audio.current.src = httpCompleto
 			rep()
 			console.log(songs[id].name);
 	}
