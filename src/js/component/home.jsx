@@ -9,12 +9,11 @@ const Home = () => {
 	const [songs, setSongs] = useState([])
 	const [color, setColor] = useState("")
 	const [newUrl, setNewUrl] = useState("")
-	const [id, setId] = useState()
+	const [id, setId] = useState(0)
 	const [botonPlay, setBotonPlay] = useState("block")
 	const [botonPause, setBotonPause] = useState("none")
 	const audio = useRef()
 	const http = 'https://assets.breatheco.de/apis/sound/'
-
 	async function getInfo() {
 		try {
 			const response = await fetch('https://playground.4geeks.com/apis/fake/sound/songs')     // fetch('https://playground.4geeks.com/apis/fake/sound/songs')  //especificamos la url donde vamos a buscar info
@@ -30,7 +29,6 @@ const Home = () => {
 	}, [])
 
 	function rep() {
-		// console.log(newUrl);
 		if (audio.current.paused) {
 			audio.current.play();
 			setBotonPlay("none")
@@ -67,9 +65,9 @@ const Home = () => {
 		<div>
 			<ul className="list-group">{
 				songs.map((song) => {
-					return <li onMouseEnter={() => setColor('100')} key={song.id}
+					return <li id={song.id} onMouseEnter={() => setColor(song.id)} key={song.id}
 							onClick={() => {setNewUrl(song.url); rep(); setId(song.id)}}
-						className={"bg-black text-white list-group-item bg-opacity-" + color}
+						className={"bg-black text-white list-group-item bg-opacity-" + (color == song.id ? "75" : "100")}
 					><span className="me-4 text-white-50">{song.id}</span>{song.name}</li>
 				})
 			}</ul>
