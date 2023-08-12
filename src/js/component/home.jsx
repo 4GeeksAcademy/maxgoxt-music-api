@@ -16,7 +16,7 @@ const Home = () => {
 	const [songs, setSongs] = useState([])
 	const [index, setIndex] = useState(0)
 	const [color, setColor] = useState("")
-	const [borde, setBorde] = useState("")
+	const [borde, setBorde] = useState('solid 1px #000')
 	const [botonPlay, setBotonPlay] = useState("block")
 	const [botonPause, setBotonPause] = useState("none")
 	const [newUrl, setNewUrl] = useState("files/mario/songs/castle.mp3")
@@ -30,7 +30,7 @@ const Home = () => {
 
 	function foco() {
 		let items = lista.current.childNodes
-		for (let idx = 0; idx < lista.current.childNodes.length; idx++) {
+		for (let idx = 0; idx < items.length; idx++) {
 			items[idx].style.background = "black"
 		}
 		items[index].style.background = "#555"
@@ -38,11 +38,10 @@ const Home = () => {
 
 	function rastro() {
 		let items = lista.current.childNodes
-		console.log('hello');
-		for (let idx = 0; idx < lista.current.childNodes.length; idx++) {
-			items[idx].style.border = ""
+		for (let idx = 0; idx < items.length; idx++) {
+			items[idx].style.border = "solid 1px #000"
 		}
-		setBorde(["solid","2px", "#555"])
+		items[index].style.border = "solid 1px #555"
 	}
 
 	function rep() {
@@ -84,7 +83,7 @@ const Home = () => {
 			<div className="pb-5">
 				<ul className="list-group" ref={lista}>{
 					songs.map((song) => {
-						return <li style={{ background: 'black', border: borde}} id={song.id} onMouseEnter={() => rastro()} key={song.id}
+						return <li style={{ background: 'black', border: borde}} id={song.id} onMouseEnter={() => {rastro(); setIndex(song.id)}} key={song.id}
 							onClick={() => { setNewUrl(song.url); setIndex(song.id - 1); rep(); foco()}}
 							className="text-white list-group-item"
 						><span className="me-4 text-white-50">{song.id}</span>{song.name}</li>
