@@ -38,6 +38,7 @@ const Home = () => {
 
 	function rastro() {
 		let items = lista.current.childNodes
+		console.log('hello');
 		for (let idx = 0; idx < lista.current.childNodes.length; idx++) {
 			items[idx].style.border = ""
 		}
