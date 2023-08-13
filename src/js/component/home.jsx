@@ -15,7 +15,6 @@ const Home = () => {
 
 	const [songs, setSongs] = useState([])
 	const [index, setIndex] = useState(0)
-	const [borde, setBorde] = useState('solid 1px #000')
 	const [botonPlay, setBotonPlay] = useState("block")
 	const [botonPause, setBotonPause] = useState("none")
 	const [newUrl, setNewUrl] = useState("")
@@ -80,8 +79,8 @@ const Home = () => {
 			<div className="pb-5">
 				<ul className="list-group" ref={lista}>{
 					songs.map((song) => {
-						return <li style={{ background: '#000', border: borde}} id={song.id} onMouseEnter={() => {cursor(song.id - 1);}} key={song.id}
-							onClick={() => { setNewUrl(song.url); rep(song.id - 1); foco(song.id - 1);}}
+						return <li style={{ background: '#000', border: 'solid 1px #000'}} id={song.id} onMouseEnter={() => {cursor(song.id - 1);}} key={song.id}
+							onClick={() => { setNewUrl(song.url); setIndex(song.id - 1); rep(song.id - 1); foco(song.id - 1);}}
 							className="text-white list-group-item"
 						><span className="me-4 text-white-50">{song.id}</span>{song.name}</li>
 					})
