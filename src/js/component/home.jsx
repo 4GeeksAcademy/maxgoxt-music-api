@@ -95,7 +95,7 @@ const Home = () => {
 				<footer className="d-flex justify-content-around my-3">
 					<audio src={http + newUrl} ref={audio}></audio>
 					<i onClick={() => back()} className="fa fa-backward" style={{ color: '#fff' }}></i>
-					<i onClick={() => rep()} className={"fa fa-play d-" + botonPlay} style={{ color: '#fff' }}></i>
+					<i onClick={() => {rep(); foco(index)}} className={"fa fa-play d-" + botonPlay} style={{ color: '#fff' }}></i>
 					<i onClick={() => rep()} className={"fa fa-pause d-" + botonPause} style={{ color: '#fff' }}></i>
 					<i onClick={() => next()} className="fa fa-forward" style={{ color: '#fff' }}></i>
 				</footer>
