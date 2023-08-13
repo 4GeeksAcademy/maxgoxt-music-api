@@ -17,7 +17,7 @@ const Home = () => {
 	const [index, setIndex] = useState(0)
 	const [botonPlay, setBotonPlay] = useState("block")
 	const [botonPause, setBotonPause] = useState("none")
-	const [newUrl, setNewUrl] = useState("")
+	const [newUrl, setNewUrl] = useState()
 	const http = 'https://assets.breatheco.de/apis/sound/'
 	const audio = useRef()
 	const lista = useRef()
@@ -43,11 +43,14 @@ const Home = () => {
 	}
 
 	function rep() {
+		console.log(songs[index].name);
 		if (audio.current.paused) {
+			audio.current.src = http + songs[index].url
 			audio.current.play();
 			setBotonPlay("none")
 			setBotonPause("block")
 		} else {
+			audio.current.src = http + songs[index].url
 			audio.current.pause()
 			setBotonPlay("block")
 			setBotonPause("none")
@@ -59,7 +62,8 @@ const Home = () => {
 		if (index == songs.length -1) {
 			setIndex(0)
 		}
-		audio.current.src = http + songs[index].url
+		audio.current.pause()
+		// audio.current.src = http + songs[index].url
 		foco(index)
 		rep()
 	}
@@ -69,7 +73,8 @@ const Home = () => {
 		if (index == 0) {
 			setIndex((1 - songs.length) * -1)
 		}
-		audio.current.src = http + songs[index].url
+		audio.current.pause()
+		// audio.current.src = http + songs[index].url
 		foco(index)
 		rep()
 	}
@@ -80,7 +85,7 @@ const Home = () => {
 				<ul className="list-group" ref={lista}>{
 					songs.map((song) => {
 						return <li style={{ background: '#000', border: 'solid 1px #000'}} id={song.id} onMouseEnter={() => {cursor(song.id - 1);}} key={song.id}
-							onClick={() => { setNewUrl(song.url); setIndex(song.id - 1); rep(song.id - 1); foco(song.id - 1);}}
+							onClick={() => { setNewUrl(song.url); setIndex(song.id - 1); rep(); foco(song.id - 1);}}
 							className="text-white list-group-item"
 						><span className="me-4 text-white-50">{song.id}</span>{song.name}</li>
 					})
